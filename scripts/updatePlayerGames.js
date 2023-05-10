@@ -38,7 +38,9 @@ while (isLessThan(games.reports[games.reports.length - 1].timestamp)) {
 
 console.log('Got %d games', games.reports.length);
 
-writeFileSync(FILE, JSON.stringify(games, null, 2));
+const reports = [... new Set([games.reports, existingReports].flat())].sort((a, b) => a.timestamp - b.timestamp);
+
+writeFileSync(FILE, JSON.stringify({ reports }, null, 2));
 
 console.log('This could take over %d seconds', Math.ceil(games.reports.length * TIMEOUT2 / 1000));
 
