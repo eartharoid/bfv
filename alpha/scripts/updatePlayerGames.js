@@ -16,6 +16,11 @@ const { reports: existingReports } = JSON.parse(readFileSync(FILE));
 const getJSON = () => JSON.parse(document.querySelector('body').innerText);
 const isLessThan = (timestamp) => timestamp < existingReports[existingReports.length - 1].timestamp;
 
+const meta = {
+	maps: JSON.parse(readFileSync('data/__meta_maps.json')),
+	modes: JSON.parse(readFileSync('data/__meta_modes.json')),
+};
+
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
 
@@ -38,7 +43,21 @@ while (isLessThan(games.reports[games.reports.length - 1].timestamp)) {
 
 console.log('Got %d games', games.reports.length);
 
-const reports = [... new Set([games.reports, existingReports].flat())].sort((a, b) => a.timestamp - b.timestamp);
+games.reports = games.reports.map(game => {
+	if (!meta.maps[game.mapKey]) {
+		meta.maps[game.mapKey] = game.map;
+		writeFileSync('data/__meta_maps.json', JSON.stringify(meta.maps, null, 2));
+	}
+	delete game.map;
+	if (!meta.modes[game.modeKey]) {
+		meta.modes[game.modeKey] = game.mode;
+		writeFileSync('data/__meta_modes.json', JSON.stringify(meta.modes, null, 2));
+	}
+	delete game.mode;
+	return game;
+});
+
+const reports = [... new Set([games.reports, existingReports].flat())].sort((a, b) => b.timestamp - a.timestamp);
 
 writeFileSync(FILE, JSON.stringify({ reports }, null, 2));
 
@@ -55,7 +74,6 @@ for (const game of games.reports) {
 	console.log('Getting %s game data...', game.gameReportId);
 	await page.goto(`${API}/${PLATFORM}/direct/${game.gameReportId}`);
 	const { data } = await page.evaluate(getJSON);
-	// writeFileSync(GAME_FILE, JSON.stringify(data, null, 2));
 	createWriteStream(GAME_FILE).write(JSON.stringify(data, null, 2));
 }
 

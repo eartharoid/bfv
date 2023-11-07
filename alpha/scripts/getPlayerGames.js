@@ -1,19 +1,26 @@
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { createWriteStream, existsSync, writeFileSync } from 'node:fs';
+import { createWriteStream, existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 puppeteer.use(StealthPlugin());
 
 const API = 'https://api.tracker.gg/api/v1/bfv/gamereports';
 const PLATFORM = 'xbl';
-const USERNAME = 'eartharoid';
-const DAYS = 30;
+const USERNAME = 'StrykoMiko';
+const DAYS = 12;
 const FILE = `data/${PLATFORM}-${USERNAME}-games.json`;
-const TIMEOUT1 = 2500;
-const TIMEOUT2 = 5000;
+// const TIMEOUT1 = 2500; // TODO:
+// const TIMEOUT2 = 5000; // TODO:
+const TIMEOUT1 = 1000; // TODO:
+const TIMEOUT2 = 2000; // TODO:
 
 const getJSON = () => JSON.parse(document.querySelector('body').innerText);
 const isLessThanDays = (timestamp) => (Date.now() - timestamp) / (1000 * 60 * 60 * 24) < DAYS;
+
+const meta = {
+	maps: JSON.parse(readFileSync('data/__meta_maps.json')),
+	modes: JSON.parse(readFileSync('data/__meta_modes.json')),
+}
 
 const browser = await puppeteer.launch();
 const page = await browser.newPage();
@@ -25,7 +32,7 @@ const { data: games } = await page.evaluate(getJSON);
 let { paginationToken } = games;
 delete games.paginationToken;
 
-while (isLessThanDays(games.reports[games.reports.length - 1].timestamp * 1000)) {
+while (isLessThanDays(games.reports[games.reports.length - 1].timestamp * 1000) && paginationToken) {
 	console.log('Pausing...');
 	await new Promise(r => setTimeout(r, TIMEOUT1));
 	console.log('Getting next page of games...');
@@ -36,6 +43,20 @@ while (isLessThanDays(games.reports[games.reports.length - 1].timestamp * 1000))
 }
 
 console.log('Got %d games', games.reports.length)
+
+games.reports = games.reports.map(game => {
+	if (!meta.maps[game.mapKey]) {
+		meta.maps[game.mapKey] = game.map;
+		writeFileSync('data/__meta_maps.json', JSON.stringify(meta.maps, null, 2));
+	}
+	delete game.map;
+	if (!meta.modes[game.modeKey]) {
+		meta.modes[game.modeKey] = game.mode;
+		writeFileSync('data/__meta_modes.json', JSON.stringify(meta.modes, null, 2));
+	}
+	delete game.mode;
+	return game;
+});
 
 writeFileSync(FILE, JSON.stringify(games, null, 2));
 
@@ -52,7 +73,6 @@ for (const game of games.reports) {
 	console.log('Getting %s game data...', game.gameReportId);
 	await page.goto(`${API}/${PLATFORM}/direct/${game.gameReportId}`);
 	const { data } = await page.evaluate(getJSON);
-	// writeFileSync(GAME_FILE, JSON.stringify(data, null, 2));
 	createWriteStream(GAME_FILE).write(JSON.stringify(data, null, 2));
 }
 

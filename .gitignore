@@ -1,2 +1,4 @@
 data/
+Human/
 node_modules/
+.env
