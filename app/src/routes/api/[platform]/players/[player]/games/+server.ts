@@ -59,6 +59,14 @@ export async function PUT({ request, params }) {
 		.map((report) => report.gameReportId);
 
 	const key = `${platform}/players/${playerName}/games.json`;
+	const file = await readFile(key, { as: "string" });
+	
+	// don't nuke existing data
+	if (file) {
+		const { reports }: PlayerGames = JSON.parse(<string>file);
+		if (data.reports.length < reports.length) return createError(409);
+	}
+
 	await writeFile(key, JSON.stringify(data));
 
 	return json({ missing });
