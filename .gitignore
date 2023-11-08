@@ -2,3 +2,4 @@ data/
 Human/
 node_modules/
 .env
+outpost/config.yml

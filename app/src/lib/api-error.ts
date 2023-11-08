@@ -1,17 +1,14 @@
 import Statuses from "http-status";
 import { error } from "@sveltejs/kit";
 
-export function createError(status: number, message = Statuses[status]) {
-	return new Response(
-		JSON.stringify({ error: message }),
-		{
-			status: status,
-			statusText: Statuses[status],
-			headers: {
-				"Content-Type": "application/json"
-			}
+export function createError(status: number, message: unknown = Statuses[status]) {
+	return new Response(JSON.stringify({ error: message }), {
+		status: status,
+		statusText: Statuses[status],
+		headers: {
+			"Content-Type": "application/json"
 		}
-	)
+	});
 }
 
 export async function handleNotOk(response: Response) {

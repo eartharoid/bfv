@@ -1,0 +1,18 @@
+HQ: https://bfv.eartharoid.me
+key:
+cron: 0 4 * * *
+backfill: null
+use_platoons: true
+monitor:
+  xbl:
+    platoons: []
+    players: []
+    rename: {}
+  psn:
+    platoons: []
+    players: []
+    rename: {}
+  origin:
+    platoons: []
+    players: []
+    rename: {}

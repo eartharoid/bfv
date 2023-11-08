@@ -5,8 +5,18 @@ import {
 	S3_REGION,
 	S3_SECRET_KEY
 } from "$env/static/private";
-import { ListObjectsV2Command, GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+	ListObjectsV2Command,
+	GetObjectCommand,
+	S3Client,
+	HeadObjectCommand,
+	PutObjectCommand
+} from "@aws-sdk/client-s3";
 import type { _Object, CommonPrefix } from "@aws-sdk/client-s3";
+
+type ReadFileOptions = {
+	as: "buffer" | "stream" | "string" | "raw";
+};
 
 const s3 = new S3Client({
 	credentials: {
@@ -44,12 +54,42 @@ export async function ls(Prefix: string) {
 	};
 }
 
-export async function readFile(Key: string) {
+export async function readFile(Key: string, options: ReadFileOptions = { as: "string" }) {
 	const command = new GetObjectCommand({
 		Bucket: S3_BUCKET,
 		Key
 	});
 	const response = await s3.send(command);
-	const data = await response.Body?.transformToString();
-	return data;
+	if (!response.Body) return null;
+	if (options.as === "buffer") return response.Body.transformToByteArray();
+	else if (options.as === "stream") return response.Body.transformToWebStream();
+	else if (options.as === "string") return response.Body.transformToString();
+	else if (options.as === "raw") return response;
+	else throw new Error(`"${options.as}" is an invalid return type`);
+}
+
+export async function fileExists(Key: string) {
+	const command = new HeadObjectCommand({
+		Bucket: S3_BUCKET,
+		Key
+	});
+	try {
+		await s3.send(command);
+		return true;
+	} catch (error) {
+		if (error instanceof Error) {
+			if (error.name === "NotFound") return false;
+		}
+		throw error;
+	}
+}
+
+export async function writeFile(Key: string, Body: string | Uint8Array | ReadableStream<unknown>) {
+	const command = new PutObjectCommand({
+		Body,
+		Bucket: S3_BUCKET,
+		Key
+	});
+	const response = await s3.send(command);
+	return response;
 }

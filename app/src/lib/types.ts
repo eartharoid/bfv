@@ -1,3 +1,15 @@
+export interface Auth {
+	iat: number;
+	sub: string;
+	vpy?: string[];
+	vpt?: string[];
+}
+
+export interface UserContentMetadata {
+	lastUpdatedAt: string;
+	lastUpdatedBy: string;
+}
+
 export interface PlatoonMember {
 	id: string;
 	name: string;
@@ -6,6 +18,7 @@ export interface PlatoonMember {
 }
 
 export interface Platoon {
+	$metadata: UserContentMetadata;
 	id: string;
 	tag: string;
 	name: string;
@@ -21,3 +34,16 @@ export interface Platoon {
 export interface PlatoonsMap {
 	[key: string]: Platoon;
 }
+
+export interface PlayerGames {
+	$metadata: UserContentMetadata;
+	reports: {
+		gameReportId: string;
+		timestamp: number;
+		mapKey: string;
+		modeKey: string;
+		serverName: string;
+	}[];
+}
+
+export type TRNPlatform = "xbl" | "psn" | "origin";

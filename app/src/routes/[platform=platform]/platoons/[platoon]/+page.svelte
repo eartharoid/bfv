@@ -48,8 +48,8 @@
 			class="lg:px-18 3xl:px-56 4xl:px-64 relative mx-auto h-screen overflow-scroll p-8 md:p-12 2xl:px-48"
 		>
 			<div class="grid grid-cols-1 gap-12 lg:grid-cols-3">
-				<div class="m-2 sm:m-8">
-					<div class="lg:fixed">
+				<div>
+					<div class="m-2 sm:m-8 lg:fixed">
 						<div>
 							<Back text="Platoons" />
 							<!-- <img src={data.platoon.emblem} alt="" class="opacity-20 brightness-75 absolute -z-10"> -->
@@ -94,8 +94,8 @@
 					</div>
 				</div>
 				<div class="col-span-2">
-					<main class="sm:p-4">
-						<h2 id="overview" class="text-shadow-xl text-3xl font-bold shadow-black">Overview</h2>
+					<main class="m-2 sm:my-8">
+						<h2 id="overview" class="text-shadow-xl text-2xl font-bold shadow-black">Overview</h2>
 						<div
 							class="my-6 rounded-lg border border-slate-600 bg-slate-900/50 p-2 sm:p-4 md:p-6 backdrop-blur-xl"
 						>
@@ -122,7 +122,7 @@
 									<span class="font-semibold">Members</span>
 									<span class="text-sm text-slate-400">({data.platoon.currentSize})</span>
 								</h4>
-								<div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3">
+								<div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 max-h-48 overflow-y-auto"> <!-- max-h-60 is perfect -->
 									{#each data.platoon.members as member}
 										<div>
 											<a
