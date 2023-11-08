@@ -7,9 +7,10 @@ import { ZPlayerGames } from "$lib/schemas.js";
 import { json } from "@sveltejs/kit";
 
 /** @type {import('./$types').RequestHandler} */
-export async function GET({ params }) {
+export async function GET({ params, setHeaders }) {
 	const { platform, player: playerName } = params;
 	const key = `${platform}/players/${playerName}/games.json`;
+	setHeaders({ "Cache-Control": "public, max-age=3600" });
 	try {
 		const data = <ReadableStream<PlayerGames> | null>await readFile(key, { as: "stream" });
 		if (!data) return createError(404, "No data");
