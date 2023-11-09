@@ -41,7 +41,7 @@ if (options.players) {
 if (options.platoons) {
 	options.platoons.every((platoon) => {
 		if (platoon === '*') return true;
-		const [platform, uuid] = player.split(':');
+		const [platform, uuid] = platoon.split(':');
 		if (!platform || !uuid || !platforms.includes(platform)) {
 			console.error(`Invalid platoon: ${platoon}`);
 			process.exit(1);

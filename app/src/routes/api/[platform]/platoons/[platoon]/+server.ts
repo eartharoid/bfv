@@ -1,15 +1,15 @@
-import type { Platoon, PlatoonsMap } from "$lib/types";
 import { readFile } from "$lib/s3";
 import { createError } from "$lib/api-error";
-import { json } from "@sveltejs/kit";
+import { HeaderFactory } from "$lib/headers.js";
+import { gunzip } from "$lib/gzip.js";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params, setHeaders }) {
 	const { platform, platoon: platoonId } = params;
-	const data = <string>await readFile(`${platform}/__platoons.json`);
-	const map: PlatoonsMap = data ? JSON.parse(data) : {};
-	const platoon: Platoon = map[platoonId];
-	if (!platoon) return createError(404, "Platoon not found");
-	setHeaders({ "Cache-Control": "public, max-age=3600" });
-	return json(platoon);
+	const data = <ReadableStream | null>(
+		await readFile(`${platform}/platoons/${platoonId}/platoon.json.gz`, { as: "stream" })
+	);
+	if (!data) return createError(404, "Platoon not found");
+	HeaderFactory(setHeaders).json().cache();
+	return new Response(gunzip(data));
 }

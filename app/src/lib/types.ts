@@ -17,8 +17,7 @@ export interface PlatoonMember {
 	role: "General" | "Colonel" | "Lieutenant" | "Private" | "Unknown";
 }
 
-export interface Platoon {
-	$metadata: UserContentMetadata;
+export interface PlatoonSummary {
 	id: string;
 	tag: string;
 	name: string;
@@ -27,12 +26,12 @@ export interface Platoon {
 	canApplyToJoin: boolean;
 	canJoinWithoutApply: boolean;
 	emblem: string;
-	members: PlatoonMember[];
-	servers: unknown[];
 }
 
-export interface PlatoonsMap {
-	[key: string]: Platoon;
+export interface Platoon extends PlatoonSummary {
+	$metadata: UserContentMetadata;
+	members: PlatoonMember[];
+	servers: unknown[];
 }
 
 export interface PlayerGames {

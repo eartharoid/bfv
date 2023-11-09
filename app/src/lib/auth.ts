@@ -1,7 +1,8 @@
-import type { Auth, PlatoonsMap, TRNPlatform } from "./types";
+import type { Auth, Platoon, TRNPlatform } from "./types";
 import { JWT_SECRET } from "$env/static/private";
 import { createVerifier } from "fast-jwt";
 import { readFile } from "./s3";
+import { gunzip } from "./gzip";
 
 export async function getAuthentication(request: Request): Promise<Auth | null> {
 	const verify = createVerifier({ key: async () => JWT_SECRET });
@@ -32,14 +33,17 @@ export async function checkAuthorisation(
 	if (against.type === "player" && auth.vpy && auth.vpy.includes(easyId)) return true;
 	if (against.type === "player" && auth.vpt) {
 		// this is slightly pointless because it can be easily bypassed by adding a member to a platoon but ¯\_(ツ)_/¯
-		const platoons: PlatoonsMap = JSON.parse(
-			<string>await readFile(`${against.platform}/__platoons.json`)
-		);
-		auth.vpt.some((vpt) => {
+		const platoons: Platoon[] = [];
+		for (const vpt of auth.vpt) {
 			const [platoonPlatform, platoonId] = vpt.split(":");
-			if (platoonPlatform !== against.platform) return false;
-			const platoon = platoons[platoonId];
-			if (!platoon) return false;
+			if (platoonPlatform !== against.platform) continue;
+			const key = `${platoonPlatform}/platoons/${platoonId}/platoon.json.gz`;
+			const data = <ReadableStream>await readFile(key, { as: "stream" });
+			const platoon: Platoon = await new Response(gunzip(data)).json();
+			platoons.push(platoon);
+		}
+		console.log(platoons);
+		platoons.some((platoon) => {
 			return platoon.members.some((member) => member.name === against.id); // actual name not easyId
 		});
 	}

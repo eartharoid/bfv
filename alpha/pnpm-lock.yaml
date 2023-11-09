@@ -8,6 +8,9 @@ dependencies:
   csv-stringify:
     specifier: ^6.4.4
     version: 6.4.4
+  fflate:
+    specifier: ^0.8.1
+    version: 0.8.1
   puppeteer:
     specifier: ^20.1.2
     version: 20.1.2
@@ -323,6 +326,10 @@ packages:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
     dependencies:
       pend: 1.2.0
+    dev: false
+
+  /fflate@0.8.1:
+    resolution: {integrity: sha512-/exOvEuc+/iaUm105QIiOt4LpBdMTWsXxqR0HDF35vx3fmaKzw7354gTilCh5rkzEt8WYyG//ku3h3nRmd7CHQ==}
     dev: false
 
   /for-in@0.1.8:

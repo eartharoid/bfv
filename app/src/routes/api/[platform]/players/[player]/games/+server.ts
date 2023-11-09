@@ -1,25 +1,21 @@
 import type { PlayerGames, TRNPlatform } from "$lib/types.js";
 import { ls, readFile, writeFile } from "$lib/s3";
 import { createError } from "$lib/api-error";
-import { asJSON } from "$lib/headers.js";
+import { HeaderFactory } from "$lib/headers.js";
 import { checkAuthorisation, getAuthentication } from "$lib/auth.js";
 import { ZPlayerGames } from "$lib/schemas.js";
 import { json } from "@sveltejs/kit";
+import { gunzip } from "$lib/gzip.js";
+import { gzipSync, strToU8 } from 'fflate'; //instead of node:zlib to work natively in Workers
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params, setHeaders }) {
 	const { platform, player: playerName } = params;
-	const key = `${platform}/players/${playerName}/games.json`;
-	setHeaders({ "Cache-Control": "public, max-age=3600" });
-	try {
-		const data = <ReadableStream<PlayerGames> | null>await readFile(key, { as: "stream" });
-		if (!data) return createError(404, "No data");
-		return asJSON(data);
-	} catch (error) {
-		if (error instanceof Error && error.name === "NoSuchKey")
-			return createError(404, "Player not found");
-		throw error;
-	}
+	const key = `${platform}/players/${playerName}/games.json.gz`;
+	const data = <ReadableStream | null>await readFile(key, { as: "stream" });
+	if (!data) return createError(404, "No data");
+	HeaderFactory(setHeaders).json().cache();
+	return new Response(gunzip(data));
 }
 
 /** @type {import('./$types').RequestHandler} */
@@ -59,16 +55,18 @@ export async function PUT({ request, params }) {
 		.filter((report) => !allPlatformGames.includes(report.gameReportId))
 		.map((report) => report.gameReportId);
 
-	const key = `${platform}/players/${playerName}/games.json`;
-	const file = await readFile(key, { as: "string" });
-	
+	const key = `${platform}/players/${playerName}/games.json.gz`;
+	const file = <ReadableStream>await readFile(key, { as: "stream" });
+
 	// don't nuke existing data
 	if (file) {
-		const { reports }: PlayerGames = JSON.parse(<string>file);
+		const { reports }: PlayerGames = await new Response(gunzip(file)).json();
 		if (data.reports.length < reports.length) return createError(409);
 	}
 
-	await writeFile(key, JSON.stringify(data));
+	// const gzipStream = gzip(convertStream(stringifyStream(data)));
+	// const gzipBuffer = new Uint8Array(await new Response(gzipStream).arrayBuffer());
+	await writeFile(key, gzipSync(strToU8(JSON.stringify(data))));
 
 	return json({ missing });
 }

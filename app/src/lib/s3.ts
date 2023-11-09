@@ -54,18 +54,23 @@ export async function ls(Prefix: string) {
 	};
 }
 
-export async function readFile(Key: string, options: ReadFileOptions = { as: "string" }) {
+export async function readFile(Key: string, options: ReadFileOptions) {
 	const command = new GetObjectCommand({
 		Bucket: S3_BUCKET,
 		Key
 	});
-	const response = await s3.send(command);
-	if (!response.Body) return null;
-	if (options.as === "buffer") return response.Body.transformToByteArray();
-	else if (options.as === "stream") return response.Body.transformToWebStream();
-	else if (options.as === "string") return response.Body.transformToString();
-	else if (options.as === "raw") return response;
-	else throw new Error(`"${options.as}" is an invalid return type`);
+	try {
+		const response = await s3.send(command);
+		if (!response.Body) return null;
+		if (options.as === "buffer") return response.Body.transformToByteArray();
+		else if (options.as === "stream") return response.Body.transformToWebStream();
+		else if (options.as === "string") return response.Body.transformToString();
+		else if (options.as === "raw") return response;
+		else throw new Error(`"${options.as}" is an invalid return type`);
+	} catch (error) {
+		if (error instanceof Error && error.name === "NoSuchKey") return null;
+		throw error;
+	}
 }
 
 export async function fileExists(Key: string) {
@@ -77,14 +82,12 @@ export async function fileExists(Key: string) {
 		await s3.send(command);
 		return true;
 	} catch (error) {
-		if (error instanceof Error) {
-			if (error.name === "NotFound") return false;
-		}
+		if (error instanceof Error && error.name === "NotFound") return false;
 		throw error;
 	}
 }
 
-export async function writeFile(Key: string, Body: string | Uint8Array | ReadableStream<unknown>) {
+export async function writeFile(Key: string, Body: string | Uint8Array) {
 	const command = new PutObjectCommand({
 		Body,
 		Bucket: S3_BUCKET,
