@@ -42,10 +42,7 @@ export async function checkAuthorisation(
 			const platoon: Platoon = await new Response(gunzip(data)).json();
 			platoons.push(platoon);
 		}
-		console.log(platoons);
-		platoons.some((platoon) => {
-			return platoon.members.some((member) => member.name === against.id); // actual name not easyId
-		});
+		return platoons.some((platoon) => platoon.members.some((member) => member.name === against.id));
 	}
 
 	// platoons
