@@ -1,0 +1,26 @@
+{
+  "name": "outpost",
+  "version": "1.0.0",
+  "description": "BFV Outpost",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "cron": "^3.1.6",
+    "got": "^13.0.0",
+    "leekslazylogger": "^5.0.2",
+    "puppeteer": "^21.5.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0"
+  }
+}

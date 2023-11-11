@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>BFV Stats</title>
+	<title>Battlefield V Stats</title>
 </svelte:head>
 
 <div

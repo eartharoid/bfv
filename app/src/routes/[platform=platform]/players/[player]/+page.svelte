@@ -10,8 +10,9 @@
 	import { faXbox, faPlaystation, faSteam } from "@fortawesome/free-brands-svg-icons";
 	import Chart from "chart.js/auto";
 	import { onMount } from "svelte";
+	import type { TRNPlatform } from "$lib/types";
 
-	const platformSlug = <"xbl" | "psn" | "origin">$page.params.platform;
+	const platformSlug = <TRNPlatform>$page.params.platform;
 	const platformIcons = {
 		xbl: faXbox,
 		psn: faPlaystation,
@@ -27,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>{player} - BFV {platformName} Stats</title>
+	<title>{player} - Battlefield V {platformName} Stats</title>
 </svelte:head>
 
 <div

@@ -12,7 +12,7 @@ ALL TIME:
 		HIGHEST K/D
 	100 MOST PLAYED WITH
 	GAMEMODES (TIME AS STACKED BAR)
-BY GAMEMODE (& ALL): ??? multiple datasets per chart, or separate with gamemode selection?
+BY GAMEMODE & MAP
 	MVP % - TEAM, GAME (LINE)
 	TOP 5 % - TEAM, GAME (LINE)
 	TOTAL SCORE (BAR)
@@ -23,6 +23,8 @@ BY GAMEMODE (& ALL): ??? multiple datasets per chart, or separate with gamemode 
 	MEAN KILLS (LINE ON BAR)
 	(?) TOP 25% MEAN KILLS (LINE ON BAR)
 	HIGHEST KILLS (LINE ON BAR)
+	!! TOTAL TANK KILLS
+	!! MEAN TANK KILLS
 	KILLS PER MINUTE (SCATTER)
 	MEAN KILLS PER MINUTE (LINE ON SCATTER)
 	(?) TOP 25% MEAN KILLS PER MINUTE (LINE ON SCATTER)
@@ -33,7 +35,9 @@ BY GAMEMODE (& ALL): ??? multiple datasets per chart, or separate with gamemode 
 	HEADSHOT % (LINE)
 	HIGHEST KILL STREAK (BAR)
 	HIGHEST MULTI KILL (BAR)
-BY FACTION:
+	!! HEALS
+	!! REVIVES
+XXX BY FACTION: (TRN already has this?)
 	FAVOURITE TANK
 	FAVOURITE PLANE
 
@@ -46,3 +50,7 @@ K/D
 Factions
 Players
 Other
+
+
+faction per map for all players
+show bias towards faction on each map

@@ -6,7 +6,7 @@ import { checkAuthorisation, getAuthentication } from "$lib/auth.js";
 import { ZPlayerGames } from "$lib/schemas.js";
 import { json } from "@sveltejs/kit";
 import { gunzip } from "$lib/gzip.js";
-import { gzipSync, strToU8 } from 'fflate'; //instead of node:zlib to work natively in Workers
+import { gzipSync, strToU8 } from "fflate"; //instead of node:zlib to work natively in Workers
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params, setHeaders }) {
@@ -56,7 +56,7 @@ export async function PUT({ request, params }) {
 		.map((report) => report.gameReportId);
 
 	const key = `${platform}/players/${playerName}/games.json.gz`;
-	const file = <ReadableStream>await readFile(key, { as: "stream" });
+	const file = <ReadableStream | null>await readFile(key, { as: "stream" });
 
 	// don't nuke existing data
 	if (file) {

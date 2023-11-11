@@ -7,9 +7,10 @@
 	// @ts-ignore
 	import Fa from "svelte-fa/src/fa.svelte";
 	import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
+	import type { TRNPlatform } from "$lib/types";
 	// import { faXbox, faPlaystation, faSteam } from "@fortawesome/free-brands-svg-icons";
 
-	const platformSlug = <"xbl" | "psn" | "origin">$page.params.platform;
+	const platformSlug = <TRNPlatform>$page.params.platform;
 	// const platformIcons = {
 	// 	xbl: faXbox,
 	// 	psn: faPlaystation,
@@ -36,7 +37,7 @@
 </script>
 
 <svelte:head>
-	<title>[{data.platoon.tag}] {data.platoon.name} - BFV {platformName} Stats</title>
+	<title>[{data.platoon.tag}] {data.platoon.name} - Battlefield V {platformName} Stats</title>
 </svelte:head>
 
 <div
@@ -103,18 +104,18 @@
 							<!-- <div class="flex flex-wrap flex-row gap-4 md:gap-8 justify-evenly"> -->
 								<div>
 									<h4 class="font-semibold">Tag</h4>
-									<p class="text-sm text-slate-200">{data.platoon.tag}</p>
+									<p class="text-sm text-slate-300">{data.platoon.tag}</p>
 								</div>
 								<div>
 									<h4 class="font-semibold">General</h4>
-									<p class="text-sm text-slate-200">
+									<p class="text-sm text-slate-300">
 										{data.platoon.members.find((m) => m.role === "General")?.name}
 									</p>
 								</div>
 								<div class="md:col-span-2">
 								<!-- <div> -->
 								<h4 class="font-semibold">Description</h4>
-									<p class="text-sm text-slate-200">{data.platoon.description}</p>
+									<p class="text-sm text-slate-300">{data.platoon.description}</p>
 								</div>
 							</div>
 							<div class="mt-6">

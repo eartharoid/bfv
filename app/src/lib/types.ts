@@ -1,3 +1,5 @@
+import type { z } from "zod";
+import type { ZGameReport } from "./schemas";
 export interface Auth {
 	iat: number;
 	sub: string;
@@ -43,6 +45,12 @@ export interface PlayerGames {
 		modeKey: string;
 		serverName: string;
 	}[];
+}
+
+type BaseGameReport = z.infer<typeof ZGameReport>;
+
+export interface GameReport extends BaseGameReport {
+	$metadata: UserContentMetadata;
 }
 
 export type TRNPlatform = "xbl" | "psn" | "origin";

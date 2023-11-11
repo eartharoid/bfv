@@ -1,5 +1,6 @@
 data/
 Human/
 node_modules/
+logs/
 .env
 outpost/config.yml

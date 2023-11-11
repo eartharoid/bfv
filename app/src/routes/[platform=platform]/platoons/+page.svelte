@@ -4,8 +4,9 @@
 	import { page } from "$app/stores";
 	import Footer from "$lib/components/Footer.svelte";
 	import Back from "$lib/components/Back.svelte";
+	import type { TRNPlatform } from "$lib/types";
 
-	const platformSlug = <"xbl" | "psn" | "origin">$page.params.platform;
+	const platformSlug = <TRNPlatform>$page.params.platform;
 	const platforms = {
 		xbl: "Xbox",
 		psn: "PlayStation",
@@ -15,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>BFV {platformName} Platoons</title>
+	<title>Battlefield V {platformName} Platoons</title>
 </svelte:head>
 
 <div
