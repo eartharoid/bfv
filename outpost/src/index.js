@@ -21,7 +21,7 @@ if (options.cron) {
     },
   });
   log.warn('This process will run indefinitely (stop with Ctrl+C)');
-  log.info('Expect next run to be at', new Date(job.nextDate().ts));
+  log.info('Expect first run to be at', new Date(job.nextDate().ts));
   job.start();
 } else {
   log.info('Running once...');

@@ -1,5 +1,5 @@
 import type { z } from "zod";
-import type { ZGameReport } from "./schemas";
+import type { ZGameReport, ZGameMode, ZMap } from "./schemas";
 export interface Auth {
 	iat: number;
 	sub: string;
@@ -23,7 +23,7 @@ export interface PlatoonSummary {
 	id: string;
 	tag: string;
 	name: string;
-	description: string;
+	description: string | null;
 	currentSize: number;
 	canApplyToJoin: boolean;
 	canJoinWithoutApply: boolean;
@@ -52,5 +52,21 @@ type BaseGameReport = z.infer<typeof ZGameReport>;
 export interface GameReport extends BaseGameReport {
 	$metadata: UserContentMetadata;
 }
+
+type BaseGameMode = z.infer<typeof ZGameMode>;
+
+export interface GameMode extends BaseGameMode {
+	$metadata: UserContentMetadata;
+}
+
+export type GameModes = Record<string, GameMode>;
+
+type BaseMap = z.infer<typeof ZMap>;
+
+export interface Map extends BaseMap {
+	$metadata: UserContentMetadata;
+}
+
+export type Maps = Record<string, Map>;
 
 export type TRNPlatform = "xbl" | "psn" | "origin";

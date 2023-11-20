@@ -22,6 +22,8 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'no-prototype-builtins': 'off',
+    'no-continue': 'off',
     'no-restricted-syntax': 'off',
     'max-len': ['error', { code: 150 }],
     'import/extensions': 'off',

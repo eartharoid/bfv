@@ -1,10 +1,31 @@
 import { z } from "zod";
 
+export const ZGameMode = z.object({
+	description: z.nullable(z.string()),
+	imageUrl: z.null(),
+	key: z.string(),
+	locale: z.literal("en-US"),
+	name: z.string(),
+	title: z.literal("bfv"),
+	type: z.literal("mode")
+});
+
+export const ZMap = z.object({
+	description: z.nullable(z.string()),
+	imageUrl: z.nullable(z.string().url()),
+	key: z.string(),
+	locale: z.literal("en-US"),
+	location: z.string(),
+	name: z.string(),
+	title: z.literal("bfv"),
+	type: z.literal("map")
+});
+
 export const ZPlatoonSummary = z.object({
 	id: z.string(),
 	tag: z.string(),
 	name: z.string(),
-	description: z.string(),
+	description: z.nullable(z.string()),
 	currentSize: z.number().int().positive(),
 	canApplyToJoin: z.boolean(),
 	canJoinWithoutApply: z.boolean(),
@@ -38,11 +59,11 @@ export const ZPlayerGames = z.object({
 // :(
 export const ZGameReport = z.object({
 	id: z.string(),
-	type: z.literal("team"),
+	type: z.literal("bfv_gamereport"),
 	children: z.array(
 		z.object({
 			id: z.string(),
-			type: z.string(),
+			type: z.literal("team"),
 			children: z.array(
 				z.object({
 					id: z.string(),
@@ -54,8 +75,8 @@ export const ZGameReport = z.object({
 							children: z.null(),
 							metadata: z.object({
 								name: z.string(),
-								description: z.string(),
-								imageUrl: z.string().url(),
+								description: z.nullable(z.string()),
+								imageUrl: z.nullable(z.string().url()),
 								categoryKey: z.string(),
 								categoryName: z.string()
 							}),
@@ -88,7 +109,7 @@ export const ZGameReport = z.object({
 					metadata: z.object({
 						name: z.string(),
 						platformSlug: z.string(),
-						platformId: z.string(),
+						platformId: z.number(),
 						timePlayed: z.number()
 					}),
 					stats: z.array(
@@ -135,8 +156,8 @@ export const ZGameReport = z.object({
 			key: z.string(),
 			locale: z.literal("en-US"),
 			name: z.string(),
-			description: z.string(),
-			imageUrl: z.string().url(),
+			description: z.nullable(z.string()),
+			imageUrl: z.nullable(z.string().url()),
 			location: z.string()
 		}),
 		modeKey: z.string(),
@@ -146,8 +167,8 @@ export const ZGameReport = z.object({
 			key: z.string(),
 			locale: z.literal("en-US"),
 			name: z.string(),
-			description: z.string(),
-			imageUrl: z.string().url()
+			description: z.nullable(z.string()),
+			imageUrl: z.nullable(z.string().url())
 		}),
 		serverName: z.string(),
 		serverMod: z.string(),
