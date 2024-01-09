@@ -190,7 +190,7 @@ export default async function scrape(job) {
           delete report.mode;
         }
         if (report.map && !maps.hasOwnProperty(report.mapKey)) {
-          maps[report.modeKey] = report.map;
+          maps[report.mapKey] = report.map;
           log.info('Uploading %s map to HQ', report.mapKey);
           await HQ.post('maps', {
             json: report.map,

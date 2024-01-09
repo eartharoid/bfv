@@ -6,7 +6,7 @@ import { getAuthentication } from "$lib/auth.js";
 import { ZGameMode } from "$lib/schemas.js";
 import { json } from "@sveltejs/kit";
 import { gunzip } from "$lib/gzip.js";
-import { gzipSync, strToU8 } from "fflate"; //instead of node:zlib to work natively in Workers
+import { gzipSync, strToU8 } from "fflate"; // instead of node:zlib to work natively in Workers
 
 const key = `__meta/modes.json.gz`;
 
