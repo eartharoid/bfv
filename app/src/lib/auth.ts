@@ -1,17 +1,17 @@
 import type { Auth, Platoon, TRNPlatform } from "./types";
 import { JWT_SECRET } from "$env/static/private";
-import jwt from "jsonwebtoken";
+import { createVerifier } from "fast-jwt";
 import { readFile } from "./s3";
 import { gunzip } from "./gzip";
 
-export function getAuthentication(request: Request): Auth | null {
+export async function getAuthentication(request: Request): Promise<Auth | null> {
+	const verify = createVerifier({ key: async () => JWT_SECRET });
 	const authorization = request.headers.get("Authorization");
 	if (!authorization) return null;
 	const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." + authorization.substring(7);
 	try {
-		return jwt.verify(token, JWT_SECRET) as Auth;
+		return await verify(token);
 	} catch (error) {
-		console.error(error);
 		return null;
 	}
 }
