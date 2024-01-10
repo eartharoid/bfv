@@ -47,7 +47,9 @@
 	},
 	"pnpm": {
 		"patchedDependencies": {
-			"@sveltejs/adapter-cloudflare@3.0.1": "patches/@sveltejs__adapter-cloudflare@3.0.1.patch"
+			"@sveltejs/adapter-cloudflare@3.0.1": "patches/@sveltejs__adapter-cloudflare@3.0.1.patch",
+			"safe-buffer@5.2.1": "patches/safe-buffer@5.2.1.patch",
+			"safer-buffer@2.1.2": "patches/safer-buffer@2.1.2.patch"
 		}
 	}
 }

@@ -1,0 +1,26 @@
+diff --git a/dangerous.js b/dangerous.js
+index ca41fdc549b6553e811d35e44730a51bec68be99..4771b3e4ec7526bb1230bc1d8448b1c36c62a238 100644
+--- a/dangerous.js
++++ b/dangerous.js
+@@ -2,7 +2,7 @@
+ 
+ 'use strict'
+ 
+-var buffer = require('buffer')
++var buffer = require('node:buffer')
+ var Buffer = buffer.Buffer
+ var safer = require('./safer.js')
+ var Safer = safer.Buffer
+diff --git a/safer.js b/safer.js
+index 37c7e1aa6cbd4effd94ee28bd7b0655756b80cea..db1e8fe4d8ade1f4e30c3098db7284b115a84629 100644
+--- a/safer.js
++++ b/safer.js
+@@ -2,7 +2,7 @@
+ 
+ 'use strict'
+ 
+-var buffer = require('buffer')
++var buffer = require('node:buffer')
+ var Buffer = buffer.Buffer
+ 
+ var safer = {}
