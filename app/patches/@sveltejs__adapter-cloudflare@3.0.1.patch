@@ -1,0 +1,22 @@
+diff --git a/index.js b/index.js
+index a9e3f98405c10bd34db4c4a192c5b490fad3bc31..31fdf6055f80912741778e35258d3ba96bdcd597 100644
+--- a/index.js
++++ b/index.js
+@@ -46,7 +46,7 @@ export default function (options = {}) {
+ 			});
+ 
+ 			await esbuild.build({
+-				platform: 'browser',
++				platform: 'node',
+ 				conditions: ['worker', 'browser'],
+ 				sourcemap: 'linked',
+ 				target: 'es2022',
+@@ -58,7 +58,7 @@ export default function (options = {}) {
+ 				loader: {
+ 					'.wasm': 'copy'
+ 				},
+-				external: ['cloudflare:*']
++				external: ['cloudflare:*', 'node:*']
+ 			});
+ 		}
+ 	};
