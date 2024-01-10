@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
 	esbuild: {
-		platform: "node",
+		platform: "neutral",
 	},
 	plugins: [sveltekit()],
 });
