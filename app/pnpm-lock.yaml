@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@sveltejs/adapter-cloudflare@3.0.1':
-    hash: omi26bkhdpny3q75ztvqc5qhie
+    hash: z37ryqx3vuzwgkrj3soyys5cmu
     path: patches/@sveltejs__adapter-cloudflare@3.0.1.patch
 
 dependencies:
@@ -41,7 +41,7 @@ dependencies:
 devDependencies:
   '@sveltejs/adapter-cloudflare':
     specifier: ^3.0.1
-    version: 3.0.1(patch_hash=omi26bkhdpny3q75ztvqc5qhie)(@sveltejs/kit@2.2.0)
+    version: 3.0.1(patch_hash=z37ryqx3vuzwgkrj3soyys5cmu)(@sveltejs/kit@2.2.0)
   '@sveltejs/kit':
     specifier: ^2.2.0
     version: 2.2.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.2)(vite@5.0.11)
@@ -1597,7 +1597,7 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@sveltejs/adapter-cloudflare@3.0.1(patch_hash=omi26bkhdpny3q75ztvqc5qhie)(@sveltejs/kit@2.2.0):
+  /@sveltejs/adapter-cloudflare@3.0.1(patch_hash=z37ryqx3vuzwgkrj3soyys5cmu)(@sveltejs/kit@2.2.0):
     resolution: {integrity: sha512-yhncGexWlDE3DAd6N/wsuel7BFwgBGWkvTG8iMAEaE/dHSEEUEUXOFK4IMKtPZWFuIkXmyfLxOSD8A8Kzv7ppg==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0

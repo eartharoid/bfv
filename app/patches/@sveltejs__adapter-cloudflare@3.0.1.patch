@@ -1,5 +1,5 @@
 diff --git a/index.js b/index.js
-index a9e3f98405c10bd34db4c4a192c5b490fad3bc31..99d2398869fa12c142a787d89681cdb0143638e7 100644
+index a9e3f98405c10bd34db4c4a192c5b490fad3bc31..31fdf6055f80912741778e35258d3ba96bdcd597 100644
 --- a/index.js
 +++ b/index.js
 @@ -46,7 +46,7 @@ export default function (options = {}) {
@@ -7,7 +7,7 @@ index a9e3f98405c10bd34db4c4a192c5b490fad3bc31..99d2398869fa12c142a787d89681cdb0
  
  			await esbuild.build({
 -				platform: 'browser',
-+				platform: 'neutral',
++				platform: 'node',
  				conditions: ['worker', 'browser'],
  				sourcemap: 'linked',
  				target: 'es2022',
