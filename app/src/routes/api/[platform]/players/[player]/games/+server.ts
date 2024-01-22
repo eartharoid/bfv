@@ -19,7 +19,7 @@ export async function GET({ params, setHeaders }) {
 }
 
 /** @type {import('./$types').RequestHandler} */
-export async function PUT({ request, params }) {
+export async function POST({ request, params }) {
 	const { platform, player: playerName } = params;
 
 	// only allow authorised users to write data
@@ -34,6 +34,17 @@ export async function PUT({ request, params }) {
 
 	const parsed = ZPlayerGames.safeParse(await request.json());
 	if (!parsed.success) return createError(400, parsed.error.issues);
+	
+	const key = `${platform}/players/${playerName}/games.json.gz`;
+	const file = <ReadableStream | null>await readFile(key, { as: "stream" });
+
+	if (file) {
+		const { reports: existingReports }: PlayerGames = await new Response(gunzip(file)).json();
+		const { reports: newReports } = parsed.data;
+		const reports = [...new Set([existingReports, newReports].flat())].sort((a, b) => b.timestamp - a.timestamp);
+		parsed.data.reports = reports;
+	}
+
 	const data: PlayerGames = Object.assign(
 		{
 			// this could have been done with S3 Object LastModified and Metadata,
@@ -54,15 +65,6 @@ export async function PUT({ request, params }) {
 	const missing = data.reports
 		.filter((report) => !allPlatformGames.includes(report.gameReportId))
 		.map((report) => report.gameReportId);
-
-	const key = `${platform}/players/${playerName}/games.json.gz`;
-	const file = <ReadableStream | null>await readFile(key, { as: "stream" });
-
-	// don't nuke existing data
-	if (file) {
-		const { reports }: PlayerGames = await new Response(gunzip(file)).json();
-		if (data.reports.length < reports.length) return createError(409);
-	}
 
 	// const gzipStream = gzip(convertStream(stringifyStream(data)));
 	// const gzipBuffer = new Uint8Array(await new Response(gzipStream).arrayBuffer());
