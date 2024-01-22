@@ -36,7 +36,7 @@ async function deviate() {
 
 async function pause() {
   const time = random(config.pause.min, config.pause.max);
-  log.info('Pausing for %s', ms(time, { long: true }));
+  log.info('Pausing for %d seconds', (time / 1e+3).toFixed(2));
   await new Promise((r) => {
     setTimeout(r, time);
   });
@@ -178,8 +178,8 @@ export default async function scrape(job) {
         log.error(e);
       }
     }
-    const reports = [...new Set([existingReports, newReports].flat())].sort((a, b) => b.timestamp - a.timestamp);
-    for await (const report of reports) {
+
+    for await (const report of newReports) {
       try {
         if (report.mode && !gamemodes.hasOwnProperty(report.modeKey)) {
           gamemodes[report.modeKey] = report.mode;
@@ -201,16 +201,39 @@ export default async function scrape(job) {
         handleError(e);
       }
     }
-    try {
-      log.info('Uploading %s player %s games to HQ (this may take a few seconds...)', platform, name);
-      const { missing } = await HQ.put(`${platform}/players/${name}/games`, {
-        json: {
-          reports,
-        },
-      }).json();
-      for (const id of missing) missingGames.add(id);
-    } catch (e) {
-      log.error(e);
+    if (newReports.length === 0) {
+      log.info('%s player %s has no new games', platform, name);
+    } else {
+      log.info('Packaging %d new games', newReports.length);
+      // pack reports in shipments of max 5MB
+      // await writeFile('reports.json', JSON.stringify(newReports, null, 2));
+      const shipments = [[]];
+      for (let i = 0; i < newReports.length; i += 1) {
+        let current = shipments[shipments.length - 1];
+        const string = JSON.stringify(current);
+        const size = (new TextEncoder().encode(string)).length; // in Bytes
+        if (size > 5e+6) { // if **already** larger than 5MB (actual Lambda limit is 6MB)
+          log.info('Filled %d packages', shipments.length);
+          shipments.push([]);
+          current = shipments[shipments.length - 1];
+        }
+        current.push(newReports[i]);
+      }
+      for (let i = 0; i < shipments.length; i += 1) {
+        try {
+          log.info('Uploading %s player %s games to HQ (%d/%d)', platform, name, i + 1, shipments.length);
+
+          // eslint-disable-next-line no-await-in-loop
+          const { missing } = await HQ.post(`${platform}/players/${name}/games`, {
+            json: {
+              reports: shipments[i],
+            },
+          }).json();
+          for (const id of missing) missingGames.add(id);
+        } catch (e) {
+          log.error(e);
+        }
+      }
     }
     log.info('Fetching missing games from TRN');
     for await (const id of missingGames) {
