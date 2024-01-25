@@ -102,7 +102,7 @@
 						>
 							<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
 							<!-- <div class="flex flex-wrap flex-row gap-4 md:gap-8 justify-evenly"> -->
-								<div>
+								<!-- <div>
 									<h4 class="font-semibold">Tag</h4>
 									<p class="text-sm text-slate-300">{data.platoon.tag}</p>
 								</div>
@@ -111,7 +111,7 @@
 									<p class="text-sm text-slate-300">
 										{data.platoon.members.find((m) => m.role === "General")?.name}
 									</p>
-								</div>
+								</div> -->
 								<div class="md:col-span-2">
 								<!-- <div> -->
 								<h4 class="font-semibold">Description</h4>
