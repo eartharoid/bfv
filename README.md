@@ -1,4 +1,6 @@
 # Battlefield V Stats
+
+```
 FITLER: <1-minute playtime
 ALL TIME:
 	OVERVIEW
@@ -56,3 +58,9 @@ Other
 
 faction per map for all players
 show bias towards faction on each map
+
+## Platoons
+
+leaderboard table,
+barchart podium for best 3
+```
