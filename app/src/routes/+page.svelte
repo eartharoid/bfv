@@ -36,7 +36,7 @@
 					</a>
 				</div>
 
-				<div class="tetx-lg mb-12 flex flex-row items-center gap-6">
+				<div class="mb-12 flex flex-row items-center gap-6">
 					<h3 class="text-shadow-lg font-semibold shadow-black">Or explore:</h3>
 					<a
 						href="/gamemodes/"
