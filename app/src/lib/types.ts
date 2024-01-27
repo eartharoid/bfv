@@ -70,3 +70,8 @@ export interface Map extends BaseMap {
 export type Maps = Record<string, Map>;
 
 export type TRNPlatform = "xbl" | "psn" | "origin";
+
+export type XYData = {
+	x: number | string;
+	y: number;
+}[]

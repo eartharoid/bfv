@@ -8,6 +8,8 @@
 	import Fa from "svelte-fa/src/fa.svelte";
 	import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 	import type { TRNPlatform } from "$lib/types";
+	import LineChart from "$lib/components/Charts/LineChart.svelte";
+	import BarChart from "$lib/components/Charts/BarChart.svelte";
 	// import { faXbox, faPlaystation, faSteam } from "@fortawesome/free-brands-svg-icons";
 
 	const platformSlug = <TRNPlatform>$page.params.platform;
@@ -141,12 +143,23 @@
 						<div
 							class="my-12 rounded-lg border border-slate-600 bg-slate-900/50 p-2 text-slate-200 backdrop-blur-xl"
 						>
-							<br /><br /><br /><br /><br /><br />Hello<br /><br /><br /><br /><br /><br />
+							<BarChart data={[
+								{x: 'Player 1', y: 2},
+								{x: 'Player 2', y: 3},
+								{x: 'Player 3', y: 1},
+							]}></BarChart>
 						</div>
 						<div
 							class="my-12 rounded-lg border border-slate-600 bg-slate-900/50 p-2 text-slate-200 backdrop-blur-xl"
 						>
-							<br /><br /><br /><br /><br /><br />Hello<br /><br /><br /><br /><br /><br />
+							<LineChart data={[
+								{x: 0, y: 0},
+								{x: 1, y: 1},
+								{x: 2, y: 2},
+								{x: 3, y: 3},
+								{x: 4, y: 4},
+								{x: 5, y: 5},
+							]}></LineChart>
 						</div>
 					</main>
 				</div>

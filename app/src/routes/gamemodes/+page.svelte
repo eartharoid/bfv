@@ -11,7 +11,7 @@
 
 <div
 	class="min-h-screen bg-slate-800 bg-cover bg-fixed bg-center bg-no-repeat text-white"
-	style="background-image: url('/bg/jungle.webp')"
+	style="background-image: url('/bg/raf.webp')"
 >
 	<div class="min-h-screen backdrop-brightness-[0.6]">
 		<div class="container mx-auto">

@@ -9,7 +9,6 @@
 	import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 	import { faXbox, faPlaystation, faSteam } from "@fortawesome/free-brands-svg-icons";
 	import Chart from "chart.js/auto";
-	import { onMount } from "svelte";
 	import type { TRNPlatform } from "$lib/types";
 
 	const platformSlug = <TRNPlatform>$page.params.platform;
